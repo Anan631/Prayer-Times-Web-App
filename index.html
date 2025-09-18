@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Prayer Times</title>
+</head>
+
+<body>
+  <h1>Prayer Times</h1>
+
+  <label>Continent:
+    <select id="continent"></select>
+  </label>
+  <br><br>
+  <label>Country:
+    <select id="country"></select>
+  </label>
+  <br><br>
+  <label>City:
+    <select id="city"></select>
+  </label>
+  <br><br>
+  <label>Method:
+    <select id="method"></select>
+  </label>
+  <br><br>
+  <button id="load">Load Prayer Times</button>
+
+  <div id="error" class="hidden"></div>
+
+  <h2>Next Prayer</h2>
+  <p>
+    <strong id="next-prayer-name"></strong>
+    <span id="next-prayer-time"></span>
+    (<span id="next-prayer-countdown"></span>)
+  </p>
+
+  <table id="prayer-table">
+    <thead>
+      <tr>
+        <th>Prayer</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+
+</html>
