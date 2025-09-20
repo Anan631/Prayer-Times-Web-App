@@ -1,52 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Prayer Times</title>
+    <link rel="icon" type="image/png" href="assets/logo.png?v=3" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <title>Prayer Times</title>
-</head>
+  <body>
+    <header>
+      <h1>🕌 Prayer Times App</h1>
+    </header>
 
-<body>
-  <h1>Prayer Times</h1>
+    <main>
+      <label>
+        Continent:
+        <select id="continent"></select>
+      </label>
+      <br /><br />
+      <label>
+        Country:
+        <select id="country"></select>
+      </label>
+      <br /><br />
+      <label>
+        City:
+        <select id="city"></select>
+      </label>
+      <br /><br />
+      <label>
+        Method:
+        <select id="method"></select>
+      </label>
+      <br /><br />
+      <button id="load">Load Prayer Times</button>
 
-  <label>Continent:
-    <select id="continent"></select>
-  </label>
-  <br><br>
-  <label>Country:
-    <select id="country"></select>
-  </label>
-  <br><br>
-  <label>City:
-    <select id="city"></select>
-  </label>
-  <br><br>
-  <label>Method:
-    <select id="method"></select>
-  </label>
-  <br><br>
-  <button id="load">Load Prayer Times</button>
+      <div id="error" class="hidden"></div>
 
-  <div id="error" class="hidden"></div>
+      <div class="hidden" id="next-prayer-wrapper">
+        <h2>Next Prayer</h2>
+        <p>
+          <strong id="next-prayer-name"></strong>
+          <span id="next-prayer-time"></span>
+          <span id="next-prayer-countdown"></span>
+        </p>
+      </div>
 
-  <h2>Next Prayer</h2>
-  <p>
-    <strong id="next-prayer-name"></strong>
-    <span id="next-prayer-time"></span>
-    (<span id="next-prayer-countdown"></span>)
-  </p>
+      <table id="prayer-table" class="hidden">
+        <thead>
+          <tr>
+            <th>Prayer</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </main>
 
-  <table id="prayer-table">
-    <thead>
-      <tr>
-        <th>Prayer</th>
-        <th>Time</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+    <footer>
+      <p>© 2025 Prayer Times App — All Rights Reserved</p>
+    </footer>
 
-  <script type="module" src="./js/app.js"></script>
-</body>
-
+    <script type="module" src="js/app.js"></script>
+  </body>
 </html>
