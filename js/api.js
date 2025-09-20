@@ -6,7 +6,7 @@ export async function fetchCountries(continent) {
   const res = await fetch(API_ENDPOINTS.countriesByContinent(continent));
   if (!res.ok) throw new Error("Failed to fetch countries");
   const data = await res.json();
-  return data.map(c => c.name.common).sort();
+  return data.map((c) => c.name.common).sort();
 }
 
 export async function fetchCities(country) {
@@ -27,7 +27,9 @@ export async function fetchCities(country) {
 }
 
 export async function fetchPrayerTimes(city, country, methodId) {
-  const url = `${API_ENDPOINTS.prayerTimes}?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=${methodId}`;
+  const url = `${API_ENDPOINTS.prayerTimes}?city=${encodeURIComponent(
+    city
+  )}&country=${encodeURIComponent(country)}&method=${methodId}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error("Failed to fetch prayer times");
   const { data } = await res.json();
