@@ -15,6 +15,16 @@ export function initApp() {
 
   restoreSelections();
 
+  
+  if (el.continentSelect.value) {
+    el.continentSelect.value = el.continentSelect.value.toLowerCase();
+  }
+
+
+  if (el.continentSelect.value) {
+    el.continentSelect.dispatchEvent(new Event("change"));
+  }
+
   el.continentSelect.addEventListener("change", async () => {
     const continent = el.continentSelect.value;
     Storage.save("continent", continent);

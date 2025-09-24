@@ -48,9 +48,29 @@ function setSelectEmpty(selectEl, emptyText = 'Select...') {
   selectEl.disabled = true;
 }
 
+function setSelectWithPlaceholder(selectEl, items, placeholderText = 'Select...') {
+  clearChildren(selectEl);
+  const placeholder = document.createElement('option');
+  placeholder.value = '';
+  placeholder.textContent = placeholderText;
+  placeholder.disabled = true;
+  placeholder.selected = true;
+  selectEl.appendChild(placeholder);
+  items.forEach(item => {
+    const opt = document.createElement('option');
+    opt.value = item.value;
+    opt.textContent = item.label;
+    selectEl.appendChild(opt);
+  });
+  selectEl.disabled = false;
+}
+
 export function populateContinentSelect() {
+  
+  setSelectEmpty(elements.continentSelect, 'Select continent...');
   const items = CONTINENTS.map(c => ({ value: c, label: capitalize(c) }));
   setSelectOptions(elements.continentSelect, items, 'value', 'label');
+  elements.continentSelect.value = '';
 }
 
 export function populateMethodSelect(defaultId = 2) {
@@ -69,7 +89,6 @@ export function hideError() {
   elements.errorBox.classList.add('hidden');
 }
 
-/* ---------- Select State ---------- */
 export function showCountriesLoading() {
   setSelectLoading(elements.countrySelect, 'Loading countries...');
   setSelectEmpty(elements.citySelect);
@@ -82,13 +101,21 @@ export function showCitiesLoading() {
 }
 
 export function renderCountries(countries) {
-  setSelectOptions(elements.countrySelect, countries.map(c => ({ value: c, label: c })), 'value', 'label');
+  setSelectWithPlaceholder(
+    elements.countrySelect,
+    countries.map(c => ({ value: c, label: c })),
+    'Select country...'
+  );
   setSelectEmpty(elements.citySelect);
   elements.loadButton.disabled = true;
 }
 
 export function renderCities(cities) {
-  setSelectOptions(elements.citySelect, cities.map(c => ({ value: c, label: c })), 'value', 'label');
+  setSelectWithPlaceholder(
+    elements.citySelect,
+    cities.map(c => ({ value: c, label: c })),
+    'Select city...'
+  );
   elements.loadButton.disabled = !elements.citySelect.value;
 }
 
