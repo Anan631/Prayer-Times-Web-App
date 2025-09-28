@@ -32,7 +32,9 @@ export function loadAll() {
     continent: load('continent'),
     country: load('country'),
     city: load('city'),
-    method: load('method')
+    method: load('method'),
+    prayerTimes: load('prayerTimes'),
+    nextPrayer: load('nextPrayer')
   };
 }
 

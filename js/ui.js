@@ -66,11 +66,8 @@ function setSelectWithPlaceholder(selectEl, items, placeholderText = 'Select...'
 }
 
 export function populateContinentSelect() {
-  
-  setSelectEmpty(elements.continentSelect, 'Select continent...');
   const items = CONTINENTS.map(c => ({ value: c, label: capitalize(c) }));
-  setSelectOptions(elements.continentSelect, items, 'value', 'label');
-  elements.continentSelect.value = '';
+  setSelectWithPlaceholder(elements.continentSelect, items, 'Select continent...');
 }
 
 export function populateMethodSelect(defaultId = 2) {
@@ -151,7 +148,7 @@ export function hideNextPrayer() {
 }
 
 export function enableLoadButtonIfReady() {
-  const ready = elements.continentSelect.value && elements.countrySelect.value && elements.citySelect.value;
+  const ready = elements.continentSelect.value && elements.countrySelect.value && elements.citySelect.value && elements.methodSelect.value;
   elements.loadButton.disabled = !ready;
 }
 

@@ -1,10 +1,6 @@
-
-
-
 export function padTwoDigits(num) {
   return String(num).padStart(2, '0');
 }
-
 
 export function formatToHHMMSS(totalSeconds) {
   if (totalSeconds <= 0) return '00:00:00';
@@ -13,7 +9,6 @@ export function formatToHHMMSS(totalSeconds) {
   const s = totalSeconds % 60;
   return `${padTwoDigits(h)}:${padTwoDigits(m)}:${padTwoDigits(s)}`;
 }
-
 
 export function parseTimeStringToToday(timeStr) {
   const m = timeStr.match(/(\d{1,2}):(\d{2})/);
@@ -36,7 +31,6 @@ export function getDayLabel(dateObj) {
   return dateObj.toLocaleDateString();
 }
 
-
 export async function fetchJson(url, opts = {}) {
   const res = await fetch(url, opts);
   if (!res.ok) {
@@ -45,7 +39,6 @@ export async function fetchJson(url, opts = {}) {
   }
   return await res.json();
 }
-
 
 export function debounce(fn, wait = 200) {
   let t;
