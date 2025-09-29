@@ -96,7 +96,7 @@ select {
   background: transparent;
 }
 
-button#load {
+button {
   margin: 6px 0 10px;
   padding: 12px 16px;
   border: none;
