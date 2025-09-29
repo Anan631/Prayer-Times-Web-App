@@ -65,16 +65,34 @@ export async function initApp() {
 
       UI.renderPrayerTable(timings);
 
-      document.getElementById("next-prayer-wrapper")?.classList.remove("hidden");
+      document
+        .getElementById("next-prayer-wrapper")
+        ?.classList.remove("hidden");
       document.getElementById("prayer-table")?.classList.remove("hidden");
 
       startNextPrayerCountdown(timings);
+      el.resetButton.classList.remove("hidden");
+      el.loadButton.disabled = true;
     } catch (err) {
       UI.showError(err.message);
     }
   });
+
+  el.resetButton.addEventListener("click", () => {
+    Storage.clear();
+    reset(el);
+  });
 }
 
+function reset(el) {
+  el.loadButton.disabled = false;
+  el.resetButton.classList.add("hidden");
+  el.prayerTable.classList.add("hidden");
+  el.nextPrayerWrapper.classList.add("hidden");
+  el.continentSelect.value = "";
+  el.countrySelect.value = "";
+  el.citySelect.value = "";
+}
 async function restoreSelections() {
   const el = getDOMElements();
   const saved = Storage.loadAll();
@@ -85,41 +103,49 @@ async function restoreSelections() {
 
   if (saved.continent) {
     el.continentSelect.value = saved.continent;
-    
+
     try {
       UI.showCountriesLoading();
       const countries = await API.fetchCountries(saved.continent);
       UI.renderCountries(countries);
-      
+
       if (saved.country) {
         el.countrySelect.value = saved.country;
-        
+
         try {
           UI.showCitiesLoading();
           const cities = await API.fetchCities(saved.country);
           UI.renderCities(cities);
-          
+
           if (saved.city) {
             el.citySelect.value = saved.city;
             UI.enableLoadButtonIfReady();
-            
+
             if (saved.prayerTimes) {
               UI.renderPrayerTable(saved.prayerTimes);
-              document.getElementById("next-prayer-wrapper")?.classList.remove("hidden");
-              document.getElementById("prayer-table")?.classList.remove("hidden");
+              document
+                .getElementById("next-prayer-wrapper")
+                ?.classList.remove("hidden");
+              document
+                .getElementById("prayer-table")
+                ?.classList.remove("hidden");
               startNextPrayerCountdown(saved.prayerTimes);
+              // el.loadButton.toggleAttribute("disabled");
+              // el.resetButton.classList.toggle("hidden");
+              el.loadButton.disabled = true;
+              el.resetButton.classList.remove("hidden");
             } else {
               restoreNextPrayerCountdown();
             }
           }
         } catch (err) {
-          console.warn('Failed to load cities for saved country:', err);
-          UI.showError('Failed to load cities. Please select country again.');
+          console.warn("Failed to load cities for saved country:", err);
+          UI.showError("Failed to load cities. Please select country again.");
         }
       }
     } catch (err) {
-      console.warn('Failed to load countries for saved continent:', err);
-      UI.showError('Failed to load countries. Please select continent again.');
+      console.warn("Failed to load countries for saved continent:", err);
+      UI.showError("Failed to load countries. Please select continent again.");
     }
   } else {
     restoreNextPrayerCountdown();
@@ -150,7 +176,7 @@ function startNextPrayerCountdown(timings) {
   Storage.save("nextPrayer", {
     name: nextPrayer.name,
     timeStr: nextPrayer.timeStr,
-    nextDate: nextPrayer.nextDate.toISOString()
+    nextDate: nextPrayer.nextDate.toISOString(),
   });
 
   const updateCountdown = () => {
@@ -177,7 +203,7 @@ function restoreNextPrayerCountdown() {
 
   const savedDate = new Date(saved.nextDate);
   const now = new Date();
-  
+
   if (savedDate <= now) {
     Storage.remove("nextPrayer");
     return;
@@ -186,7 +212,7 @@ function restoreNextPrayerCountdown() {
   nextPrayer = {
     name: saved.name,
     timeStr: saved.timeStr,
-    nextDate: savedDate
+    nextDate: savedDate,
   };
 
   const updateCountdown = () => {
