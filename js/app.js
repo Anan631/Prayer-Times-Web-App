@@ -3,6 +3,7 @@ import * as API from "./api.js";
 import * as Storage from "./storage.js";
 import { getDOMElements } from "./ui.js";
 import { parseTimeStringToToday, formatToHHMMSS } from "./utils.js";
+import { PRAYER_NAMES } from "./config.js";
 
 let countdownTimer = null;
 let nextPrayer = null;
@@ -155,14 +156,16 @@ async function restoreSelections() {
 function startNextPrayerCountdown(timings) {
   if (countdownTimer) clearInterval(countdownTimer);
 
-  const prayerNames = Object.keys(timings);
   const now = new Date();
   nextPrayer = null;
 
-  for (let name of prayerNames) {
-    const prayerDate = parseTimeStringToToday(timings[name]);
-    if (prayerDate > now) {
-      nextPrayer = { name, timeStr: timings[name], nextDate: prayerDate };
+  // Only consider the 5 main prayers in the correct order
+  for (let name of PRAYER_NAMES) {
+    const timeStr = timings[name];
+    if (!timeStr) continue;
+    const prayerDate = parseTimeStringToToday(timeStr);
+    if (prayerDate && prayerDate > now) {
+      nextPrayer = { name, timeStr, nextDate: prayerDate };
       break;
     }
   }
