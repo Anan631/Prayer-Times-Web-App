@@ -72,6 +72,12 @@ main {
   margin: 0 auto;
 }
 
+.actions-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 label {
   display: grid;
   gap: 8px;
