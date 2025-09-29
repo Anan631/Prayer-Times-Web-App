@@ -49,6 +49,7 @@ export async function initApp() {
 
   el.methodSelect.addEventListener("change", () => {
     Storage.save("method", el.methodSelect.value);
+    UI.enableLoadButtonIfReady();
   });
 
   el.loadButton.addEventListener("click", async () => {
@@ -86,13 +87,12 @@ export async function initApp() {
 }
 
 function reset(el) {
-  el.loadButton.disabled = false;
+  // Hide results
   el.resetButton.classList.add("hidden");
   el.prayerTable.classList.add("hidden");
   el.nextPrayerWrapper.classList.add("hidden");
-  el.continentSelect.value = "";
-  el.countrySelect.value = "";
-  el.citySelect.value = "";
+  // Reset cascaded selects and method properly
+  UI.resetControls();
 }
 async function restoreSelections() {
   const el = getDOMElements();

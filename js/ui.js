@@ -85,13 +85,24 @@ export function populateContinentSelect() {
   );
 }
 
-export function populateMethodSelect(defaultId = 2) {
+export function populateMethodSelect() {
   const items = CALCULATION_METHODS.map((m) => ({
     value: m.id,
     label: m.name,
   }));
-  setSelectOptions(elements.methodSelect, items, "value", "label");
-  elements.methodSelect.value = String(defaultId);
+  setSelectWithPlaceholder(elements.methodSelect, items, "Select method...");
+}
+
+export function resetControls() {
+  // Repopulate continent with placeholder
+  populateContinentSelect();
+  // Disable country and city selects
+  setSelectEmpty(elements.countrySelect, "Select country...");
+  setSelectEmpty(elements.citySelect, "Select city...");
+  // Reset method to placeholder (no default selection)
+  populateMethodSelect();
+  // Disable Load button until all fields are selected
+  elements.loadButton.disabled = true;
 }
 
 export function showError(message) {
