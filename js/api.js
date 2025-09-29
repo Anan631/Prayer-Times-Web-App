@@ -36,3 +36,14 @@ export async function fetchPrayerTimes(city, country, methodId) {
   if (!data?.timings) throw new Error("Failed to fetch prayer times");
   return data.timings;
 }
+
+export async function fetchPrayerTimesByDate(city, country, methodId, dateDdMmYyyy) {
+  const url = `${API_ENDPOINTS.prayerTimes}?city=${encodeURIComponent(
+    city
+  )}&country=${encodeURIComponent(country)}&method=${methodId}&date=${encodeURIComponent(dateDdMmYyyy)}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Failed to fetch prayer times");
+  const { data } = await res.json();
+  if (!data?.timings) throw new Error("Failed to fetch prayer times");
+  return data.timings;
+}

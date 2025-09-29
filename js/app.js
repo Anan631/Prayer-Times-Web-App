@@ -72,7 +72,7 @@ export async function initApp() {
         ?.classList.remove("hidden");
       document.getElementById("prayer-table")?.classList.remove("hidden");
 
-      startNextPrayerCountdown(timings);
+      await startNextPrayerCountdown(timings);
       el.resetButton.classList.remove("hidden");
       el.loadButton.disabled = true;
     } catch (err) {
@@ -130,7 +130,7 @@ async function restoreSelections() {
               document
                 .getElementById("prayer-table")
                 ?.classList.remove("hidden");
-              startNextPrayerCountdown(saved.prayerTimes);
+              await startNextPrayerCountdown(saved.prayerTimes);
               // el.loadButton.toggleAttribute("disabled");
               // el.resetButton.classList.toggle("hidden");
               el.loadButton.disabled = true;
@@ -153,7 +153,7 @@ async function restoreSelections() {
   }
 }
 
-function startNextPrayerCountdown(timings) {
+async function startNextPrayerCountdown(timings) {
   if (countdownTimer) clearInterval(countdownTimer);
 
   const now = new Date();
@@ -171,9 +171,33 @@ function startNextPrayerCountdown(timings) {
   }
 
   if (!nextPrayer) {
-    UI.hideNextPrayer();
-    Storage.remove("nextPrayer");
-    return;
+    // All today's prayers have passed; compute tomorrow's Fajr
+    const el = getDOMElements();
+    const city = el.citySelect.value;
+    const country = el.countrySelect.value;
+    const methodId = el.methodSelect.value;
+    if (city && country && methodId) {
+      const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+      const dd = String(tomorrow.getDate()).padStart(2, '0');
+      const mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
+      const yyyy = String(tomorrow.getFullYear());
+      const ddmmyyyy = `${dd}-${mm}-${yyyy}`;
+      try {
+        const tmrTimings = await API.fetchPrayerTimesByDate(city, country, Number(methodId), ddmmyyyy);
+        const fajrStr = tmrTimings["Fajr"];
+        const fajrDate = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(),
+          parseInt(fajrStr.split(":")[0], 10), parseInt(fajrStr.split(":")[1], 10), 0, 0);
+        nextPrayer = { name: "Fajr", timeStr: fajrStr, nextDate: fajrDate };
+      } catch (e) {
+        UI.hideNextPrayer();
+        Storage.remove("nextPrayer");
+        return;
+      }
+    } else {
+      UI.hideNextPrayer();
+      Storage.remove("nextPrayer");
+      return;
+    }
   }
 
   Storage.save("nextPrayer", {
