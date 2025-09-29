@@ -75,7 +75,9 @@ main {
 .actions-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 16px;
+  margin: 12px 0 16px;
 }
 
 label {
